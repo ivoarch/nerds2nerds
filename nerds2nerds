@@ -1,0 +1,91 @@
+#!/bin/bash
+# Шел скрипт подкаст плейър за http://www.nerds2nerds.com/
+
+# Автор: Ivaylo Kuzev
+
+clear;
+
+# Името на програмата
+PROG="${0##*/}"
+
+BANNER="http://www.nerds2nerds.com/"
+
+# Уеб страницата
+RSS_URI="http://www.nerds2nerds.com/podcasts/"
+# Файл, съдържащ линковете към всички подкасти
+PLAYLIST="${HOME}/.nerds2nerds_podcast.m3u"
+# Плейър
+PLAY_COMMAND="mplayer -quiet -nolirc -prefer-ipv4 -playlist"
+
+# Цветен текст
+red=$'\e[0;31m'
+green=$'\e[0;32m'
+ylw=$'\e[0;33m'
+pur=$'\e[0;35m'
+cyn=$'\e[1;36m'
+end=$'\e[0m'
+
+# Помощтен текст
+usage() {
+    cat <<EOF
+usage: $PROG [опция]
+
+Шел скрипт подкаст плейър за http://www.nerds2nerds.com/
+
+Опции:
+   -h, --help        Показва този помощен текст.
+   -u, --update      Създай/Обнови списъка със подкасти.
+   -p, --play        Пуска последният подкаст.
+
+Примери:
+   $PROG -u  -- за да създадете списъка със наличните подкасти
+   $PROG -p  -- за да стартирате последният най нов епизод от списъка
+
+EOF
+}
+
+# Обнови листата
+update(){
+    echo -e "${ylw}Обновяване на подкаст епизодите. Моля изчакайте...${end}"
+    wget -r --spider -nd -l1 -A mp3 $RSS_URI 2>&1 | grep -Eio http.+mp3 | sort -r | uniq  > $PLAYLIST
+    echo -e "${green}Подкаст епизодите бяха обновени!${end}"
+}
+
+# Стартира плейъра
+play(){
+    if [ ! -f ${HOME}/.nerds2nerds_podcast.m3u ]; then
+        update;
+        sleep 3;
+        clear;
+    fi
+    echo -e "${cyn}$BANNER${end}"
+    echo -e "${pur}Натиснете ${ylw}'q'${end}${pur} за да излезете${end}"
+    echo -e "${pur}Регулирайте силата на звука със vol- ${ylw}'9'${end}${pur} и vol+ ${end}${ylw}'0'${end}"
+    echo -e "${pur}За да паузирате ${end}${ylw}'p'${end}${pur} за изключване на звука ${end}${ylw}'m'${end}"
+    echo -e "${pur}Използвайте ${end}${ylw}'<'${end} ${pur}и${end} ${ylw}'>'${end}${pur} напред/назад за смяна на подкаст епизодите${end}"
+    $PLAY_COMMAND $PLAYLIST 2>&1 | GREP_COLOR='0;32' egrep --color=always -i "Playing"
+}
+
+# Получи опциите
+while [ "$1" != "" ]; do
+    case "$1" in
+        -h)
+            usage; exit;;
+        -u)
+            update; exit;;
+        -p)
+            play; exit;;
+        -* | --*)
+            echo -e "${red}Няма такава опция $1${end}"; exit
+            ;;
+        *)
+            usage; exit;;
+    esac
+    shift
+done
+
+if ["$1" == ""]; then
+    echo "${red}Трябва да изберете опция: Използвайте ${PROG} -h за помощ.${end}"
+fi
+
+exit 0

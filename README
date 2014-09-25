@@ -1,0 +1,11 @@
+nerds2nerds
+-----------
+
+Шел скрипт подкаст плейър за http://www.nerds2nerds.com/
+
+Инсталация
+----------
+
+    $ git clone https://github.com/ivoarch/nerds2nerds
+    $ cd /път/до/nerds2nerds
+    # make install
