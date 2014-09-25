@@ -3,6 +3,13 @@ nerds2nerds
 
 Шел скрипт подкаст плейър за http://www.nerds2nerds.com/
 
+Зависимости
+-----------
+
+- Bash
+- Mplayer
+- Wget
+
 Инсталация
 ----------
 

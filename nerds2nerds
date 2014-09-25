@@ -17,6 +17,16 @@ pur=$'\e[0;35m'
 cyn=$'\e[1;36m'
 end=$'\e[0m'
 
+# Провери за зависимостите
+if ! which mplayer &>/dev/null; then
+    echo -e "Изисква да имате инсталиран пакета mplayer"
+    exit 1
+fi
+if ! which wget &>/dev/null; then
+    echo -e "Изисква да имате инсталиран пакета wget"
+    exit 1
+  fi
+
 # Уеб страницата
 RSS_URI="http://www.nerds2nerds.com/podcasts/"
 # Файл, съдържащ линковете към всички подкасти
