@@ -56,7 +56,16 @@ EOF
 # Обнови листата
 update(){
     echo -e "${ylw}Обновяване на подкаст епизодите. Моля изчакайте...${end}"
-    wget -r --spider -nd -l1 -A mp3 $RSS_URI 2>&1 | grep -Eio http.+mp3 | sort -r | uniq  > "$PLAYLIST"
+    wget -r --spider -nd -l1 -A mp3 $RSS_URI 2>&1 | grep -Eio http.+mp3 | sort -r | uniq  > "$PLAYLIST" &
+    pid=$!
+    spin='-\|/'
+    delay=0.15
+    i=0
+    while kill -0 $pid 2>/dev/null; do
+        i=$(( (i+1) %4 ))
+        printf "\r${spin:$i:1}"
+        sleep "$delay"
+    done
     echo -e "${green}Подкаст епизодите бяха обновени!${end}"
 }
 
