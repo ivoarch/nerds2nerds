@@ -47,13 +47,13 @@ EOF
 # Обнови листата
 update(){
     echo -e "${ylw}Обновяване на подкаст епизодите. Моля изчакайте...${end}"
-    wget -r --spider -nd -l1 -A mp3 $RSS_URI 2>&1 | grep -Eio http.+mp3 | sort -r | uniq  > $PLAYLIST
+    wget -r --spider -nd -l1 -A mp3 $RSS_URI 2>&1 | grep -Eio http.+mp3 | sort -r | uniq  > "$PLAYLIST"
     echo -e "${green}Подкаст епизодите бяха обновени!${end}"
 }
 
 # Стартира плейъра
 play(){
-    if [ ! -f ${HOME}/.nerds2nerds_podcast.m3u ]; then
+    if [ ! -f "${HOME}/.nerds2nerds_podcast.m3u" ]; then
         update;
         sleep 3;
         clear;
@@ -63,7 +63,7 @@ play(){
     echo -e "${pur}Регулирайте силата на звука със vol- ${ylw}'9'${end}${pur} и vol+ ${end}${ylw}'0'${end}"
     echo -e "${pur}За да паузирате ${end}${ylw}'p'${end}${pur} за изключване на звука ${end}${ylw}'m'${end}"
     echo -e "${pur}Използвайте ${end}${ylw}'<'${end} ${pur}и${end} ${ylw}'>'${end}${pur} напред/назад за смяна на подкаст епизодите${end}"
-    $PLAY_COMMAND $PLAYLIST 2>&1 | GREP_COLOR='0;32' egrep --color=always -i "Playing"
+    $PLAY_COMMAND "$PLAYLIST" 2>&1 | GREP_COLOR='0;32' egrep --color=always -i "Playing"
 }
 
 # Получи опциите
@@ -84,7 +84,7 @@ while [ "$1" != "" ]; do
     shift
 done
 
-if ["$1" == ""]; then
+if [ "$1" == "" ]; then
     echo "${red}Трябва да изберете опция: Използвайте ${PROG} -h за помощ.${end}"
 fi
 
