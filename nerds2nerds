@@ -8,7 +8,14 @@ clear;
 # Името на програмата
 PROG="${0##*/}"
 
-BANNER="http://www.nerds2nerds.com/"
+# Цветен текст
+red=$'\e[0;31m'
+green=$'\e[0;32m'
+ylw=$'\e[0;33m'
+blue=$'\e[0;34m'
+pur=$'\e[0;35m'
+cyn=$'\e[1;36m'
+end=$'\e[0m'
 
 # Уеб страницата
 RSS_URI="http://www.nerds2nerds.com/podcasts/"
@@ -16,14 +23,6 @@ RSS_URI="http://www.nerds2nerds.com/podcasts/"
 PLAYLIST="${HOME}/.nerds2nerds_podcast.m3u"
 # Плейър
 PLAY_COMMAND="mplayer -quiet -nolirc -prefer-ipv4 -playlist"
-
-# Цветен текст
-red=$'\e[0;31m'
-green=$'\e[0;32m'
-ylw=$'\e[0;33m'
-pur=$'\e[0;35m'
-cyn=$'\e[1;36m'
-end=$'\e[0m'
 
 # Помощтен текст
 usage() {
@@ -58,7 +57,12 @@ play(){
         sleep 3;
         clear;
     fi
-    echo -e "${cyn}$BANNER${end}"
+    echo -e "${blue}                        __    __                        __    "
+    echo -e "   ____  ___  _________/ /___|__ \ ____  ___  _________/ /____"
+    echo -e "  / __ \/ _ \/ ___/ __  / ___/_/ // __ \/ _ \/ ___/ __  / ___/"
+    echo -e " / / / /  __/ /  / /_/ (__  ) __// / / /  __/ /  / /_/ (_   ) "
+    echo -e "/_/ /_/\___/_/   \__,_/____/____/_/ /_/\___/_/   \__,_/____/  ${end}"
+    echo -e "----------------------------->>> ${cyn}http://www.nerds2nerds.com${end}"
     echo -e "${pur}Натиснете ${ylw}'q'${end}${pur} за да излезете${end}"
     echo -e "${pur}Регулирайте силата на звука със vol- ${ylw}'9'${end}${pur} и vol+ ${end}${ylw}'0'${end}"
     echo -e "${pur}За да паузирате ${end}${ylw}'p'${end}${pur} за изключване на звука ${end}${ylw}'m'${end}"
