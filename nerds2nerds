@@ -86,7 +86,7 @@ play(){
     echo -e "${pur}Регулирайте силата на звука със vol- ${ylw}'9'${end}${pur} и vol+ ${end}${ylw}'0'${end}"
     echo -e "${pur}За да паузирате ${end}${ylw}'p'${end}${pur} за изключване на звука ${end}${ylw}'m'${end}"
     echo -e "${pur}Използвайте ${end}${ylw}'<'${end} ${pur}и${end} ${ylw}'>'${end}${pur} напред/назад за смяна на подкаст епизодите${end}"
-    echo -e "${pur}Използвайте ${end}${ylw}'^'${end} ${pur}и${end} ${ylw}'V'${end}${pur} нагоре/надолу за превъртане напред и назад в епизода"
+    echo -e "${pur}Използвайте ${end}${ylw}'^'${end} ${pur}и${end} ${ylw}'V'${end}${pur} нагоре/надолу за превъртане напред и назад в епизода${end}"
     $PLAY_COMMAND "$PLAYLIST" 2>&1 | GREP_COLOR='0;32' egrep --color=always -i "Playing"
 }
 
