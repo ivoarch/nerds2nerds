@@ -69,7 +69,7 @@ exit 0
 
 # Обнови листата
 update(){
-  echo -e "${ylw}Обновяване на подкаст епизодите. Моля изчакайте...${end}"
+  printf "%s\n" "${ylw}Обновяване на подкаст епизодите. Моля изчакайте...${end}"
   wget -r --spider -nd -l1 -A ogg $RSS_URI 2>&1 | grep -Eio http.+ogg | sort -r | uniq  > "$PLAYLIST" &
   pid=$!
   spin='-\|/'
