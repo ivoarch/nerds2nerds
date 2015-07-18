@@ -3,6 +3,18 @@
 
 # Автор: Ivaylo Kuzev
 
+# This script is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation; version 3.
+#
+# This script is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+# details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program; if not, see <https://www.gnu.org/licenses/gpl-3.0.txt>
+
 clear;
 
 # Името на програмата
@@ -19,13 +31,14 @@ end=$'\e[0m'
 
 # Провери за зависимостите
 if ! which mplayer &>/dev/null; then
-    echo -e "Изисква да имате инсталиран пакета mplayer"
-    exit 1
+  printf "%s\n" "${red}Изисква да имате инсталиран пакета mplayer${end}"
+  exit 1
 fi
+
 if ! which wget &>/dev/null; then
-    echo -e "Изисква да имате инсталиран пакета wget"
-    exit 1
-  fi
+  printf "%s\n" "${red}Изисква да имате инсталиран пакета wget${end}"
+  exit 1
+fi
 
 # Уеб страницата
 RSS_URI="http://www.nerds2nerds.com/podcasts/"
@@ -36,7 +49,7 @@ PLAY_COMMAND="mplayer -quiet -nolirc -prefer-ipv4 -playlist"
 
 # Помощтен текст
 usage() {
-    cat <<EOF
+  cat <<EOF
 usage: $PROG [опция]
 
 Шел скрипт подкаст плейър за http://www.nerds2nerds.com/
@@ -51,66 +64,65 @@ usage: $PROG [опция]
    $PROG -p  -- за да стартирате последният най нов епизод от списъка
 
 EOF
+exit 0
 }
 
 # Обнови листата
 update(){
-    echo -e "${ylw}Обновяване на подкаст епизодите. Моля изчакайте...${end}"
-    wget -r --spider -nd -l1 -A mp3 $RSS_URI 2>&1 | grep -Eio http.+mp3 | sort -r | uniq  > "$PLAYLIST" &
-    pid=$!
-    spin='-\|/'
-    delay=0.15
-    i=0
-    while kill -0 $pid 2>/dev/null; do
-        i=$(( (i+1) %4 ))
-        printf "\r[${spin:$i:1}]";
-        sleep "$delay";
-    done
-    echo -e "${green}Подкаст епизодите бяха обновени!${end}"
+  echo -e "${ylw}Обновяване на подкаст епизодите. Моля изчакайте...${end}"
+  wget -r --spider -nd -l1 -A ogg $RSS_URI 2>&1 | grep -Eio http.+ogg | sort -r | uniq  > "$PLAYLIST" &
+  pid=$!
+  spin='-\|/'
+  delay=0.15
+  i=0
+  while kill -0 $pid 2>/dev/null; do
+    i=$(( (i+1) %4 ))
+    printf "\r[${spin:$i:1}]";
+    sleep "$delay";
+  done
+  printf "%s\n" "${green}Подкаст епизодите бяха обновени!${end}"
 }
 
 # Стартира плейъра
 play(){
-    if [ ! -f "${HOME}/.nerds2nerds_podcast.m3u" ]; then
-        update;
-        sleep 3;
-        clear;
-    fi
-    echo -e "${blue}                        __    __                        __    "
-    echo -e "   ____  ___  _________/ /___|__ \ ____  ___  _________/ /____"
-    echo -e "  / __ \/ _ \/ ___/ __  / ___/_/ // __ \/ _ \/ ___/ __  / ___/"
-    echo -e " / / / /  __/ /  / /_/ (__  ) __// / / /  __/ /  / /_/ (_   ) "
-    echo -e "/_/ /_/\___/_/   \__,_/____/____/_/ /_/\___/_/   \__,_/____/  ${end}"
-    echo -e "----------------------------->>> ${cyn}http://www.nerds2nerds.com${end}"
-    echo -e "${pur}Натиснете ${ylw}'q'${end}${pur} за да излезете${end}"
-    echo -e "${pur}Регулирайте силата на звука със vol- ${ylw}'9'${end}${pur} и vol+ ${end}${ylw}'0'${end}"
-    echo -e "${pur}За да паузирате ${end}${ylw}'p'${end}${pur} за изключване на звука ${end}${ylw}'m'${end}"
-    echo -e "${pur}Използвайте ${end}${ylw}'<'${end} ${pur}и${end} ${ylw}'>'${end}${pur} за смяна на подкаст епизодите${end}"
-    echo -e "${pur}Използвайте ${end}${ylw}'UP'${end} ${pur}и${end} ${ylw}'DOWN'${end}${pur} за превъртане 1 минута, напред и назад в епизода${end}"
-		echo -e "${pur}Използвайте ${end}${ylw}'PGUP'${end} ${pur}и${end} ${ylw}'PGDWN'${end}${pur} за превъртане 10 минути, напред и назад в епизода${end}"
-    $PLAY_COMMAND "$PLAYLIST" 2>&1 | GREP_COLOR='0;32' egrep --color=always -i "Playing"
+  if [ ! -f "${HOME}/.nerds2nerds_podcast.m3u" ]; then
+    update;
+    sleep 3;
+    clear;
+  fi
+  printf "%s\n" "${blue}                        __    __                        __    "
+  printf "%s\n" "   ____  ___  _________/ /___|__ \ ____  ___  _________/ /____"
+  printf "%s\n" "  / __ \/ _ \/ ___/ __  / ___/_/ // __ \/ _ \/ ___/ __  / ___/"
+  printf "%s\n" " / / / /  __/ /  / /_/ (__  ) __// / / /  __/ /  / /_/ (_   ) "
+  printf "%s\n" "/_/ /_/\___/_/   \__,_/____/____/_/ /_/\___/_/   \__,_/____/  ${end}"
+  printf "%s\n" "----------------------------->>> ${cyn}http://www.nerds2nerds.com${end}"
+  printf "%s\n" "${pur}Натиснете ${ylw}'q'${end}${pur} за да излезете${end}"
+  printf "%s\n" "${pur}Регулирайте силата на звука със vol- ${ylw}'9'${end}${pur} и vol+ ${end}${ylw}'0'${end}"
+  printf "%s\n" "${pur}За да паузирате ${end}${ylw}'p'${end}${pur} за изключване на звука ${end}${ylw}'m'${end}"
+  printf "%s\n" "${pur}Използвайте ${end}${ylw}'<'${end} ${pur}и${end} ${ylw}'>'${end}${pur} за смяна на подкаст епизодите${end}"
+  printf "%s\n" "${pur}Използвайте ${end}${ylw}'UP'${end} ${pur}и${end} ${ylw}'DOWN'${end}${pur} за превъртане 1 минута, напред и назад в епизода${end}"
+  printf "%s\n" "${pur}Използвайте ${end}${ylw}'PGUP'${end} ${pur}и${end} ${ylw}'PGDWN'${end}${pur} за превъртане 10 минути, напред и назад в епизода${end}"
+  $PLAY_COMMAND "$PLAYLIST" 2>&1 | GREP_COLOR='0;32' egrep --color=always -i "Playing"
 }
 
 # Получи опциите
-while [ "$1" != "" ]; do
-    case "$1" in
-        -h)
-            usage; exit;;
-        -u)
-            update; exit;;
-        -p)
-            play; exit;;
-        -* | --*)
-            echo -e "${red}Няма такава опция $1${end}"; exit
-            ;;
-        *)
-            usage; exit;;
-    esac
-    shift
-done
+case "$1" in
+  -h|--help)
+    usage
+    ;;
+  -u|--update)
+    update
+    ;;
+  -p| --play)
+    play
+    ;;
+  -* | --*)
+    printf "%s\n" "${red}Няма такава опция $1${end}"
+    ;;
+  *)
+    usage
+    ;;
+esac
 
-if [ "$1" == "" ]; then
-    echo "${red}Трябва да изберете опция: Използвайте ${PROG} -h за помощ.${end}"
-fi
 
 exit 0
